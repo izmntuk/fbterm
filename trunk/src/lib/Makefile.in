@@ -50,21 +50,22 @@ libshell_a_LIBADD =
 am_libshell_a_OBJECTS = libshell_a-io.$(OBJEXT) \
 	libshell_a-shell.$(OBJEXT) libshell_a-vterm_action.$(OBJEXT) \
 	libshell_a-vterm.$(OBJEXT) libshell_a-vterm_states.$(OBJEXT) \
-	libshell_a-wcwidth.$(OBJEXT) libshell_a-charsetmap.$(OBJEXT)
+	libshell_a-wcwidth.$(OBJEXT) libshell_a-charsetmap.$(OBJEXT) \
+	libshell_a-clipboard.$(OBJEXT) xclib.$(OBJEXT)
 libshell_a_OBJECTS = $(am_libshell_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libshell_a_SOURCES)
 DIST_SOURCES = $(libshell_a_SOURCES)
 ETAGS = etags
@@ -169,12 +170,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libshell.a
-libshell_a_SOURCES = io.cpp io.h shell.cpp shell.h vterm_action.cpp vterm.cpp vterm_states.cpp vterm.h type.h instance.h wcwidth.cpp charsetmap.cpp
+libshell_a_SOURCES = io.cpp io.h shell.cpp shell.h vterm_action.cpp vterm.cpp vterm_states.cpp vterm.h type.h instance.h wcwidth.cpp charsetmap.cpp clipboard.h clipboard.cpp xclib.h xclib.c
 libshell_a_CXXFLAGS = -fno-exceptions -fno-rtti
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .o .obj
+.SUFFIXES: .c .cpp .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -220,12 +221,28 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-charsetmap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-clipboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-io.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-shell.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-vterm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-vterm_action.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-vterm_states.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshell_a-wcwidth.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xclib.Po@am__quote@
+
+.c.o:
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c $<
+
+.c.obj:
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -338,6 +355,20 @@ libshell_a-charsetmap.obj: charsetmap.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='charsetmap.cpp' object='libshell_a-charsetmap.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -c -o libshell_a-charsetmap.obj `if test -f 'charsetmap.cpp'; then $(CYGPATH_W) 'charsetmap.cpp'; else $(CYGPATH_W) '$(srcdir)/charsetmap.cpp'; fi`
+
+libshell_a-clipboard.o: clipboard.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -MT libshell_a-clipboard.o -MD -MP -MF $(DEPDIR)/libshell_a-clipboard.Tpo -c -o libshell_a-clipboard.o `test -f 'clipboard.cpp' || echo '$(srcdir)/'`clipboard.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/libshell_a-clipboard.Tpo $(DEPDIR)/libshell_a-clipboard.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='clipboard.cpp' object='libshell_a-clipboard.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -c -o libshell_a-clipboard.o `test -f 'clipboard.cpp' || echo '$(srcdir)/'`clipboard.cpp
+
+libshell_a-clipboard.obj: clipboard.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -MT libshell_a-clipboard.obj -MD -MP -MF $(DEPDIR)/libshell_a-clipboard.Tpo -c -o libshell_a-clipboard.obj `if test -f 'clipboard.cpp'; then $(CYGPATH_W) 'clipboard.cpp'; else $(CYGPATH_W) '$(srcdir)/clipboard.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/libshell_a-clipboard.Tpo $(DEPDIR)/libshell_a-clipboard.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='clipboard.cpp' object='libshell_a-clipboard.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshell_a_CXXFLAGS) $(CXXFLAGS) -c -o libshell_a-clipboard.obj `if test -f 'clipboard.cpp'; then $(CYGPATH_W) 'clipboard.cpp'; else $(CYGPATH_W) '$(srcdir)/clipboard.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

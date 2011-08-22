@@ -23,6 +23,9 @@
 
 #include "io.h"
 #include "vterm.h"
+#include "clipboard.h"
+
+#undef CursorShape
 
 enum MouseType { Press = 0, Release, DblClick, Move, Wheel };
 
@@ -72,6 +75,8 @@ private:
 
 	s32 mPid;
 
+	class ClipBoard *mClip;
+	/*
 	static struct SelectedText {
 		SelectedText() {
 			text = 0;
@@ -86,6 +91,7 @@ private:
 
 		s8 *text;
 	} mSelText;
+	*/
 
 	struct TextSelection {
 		TextSelection() {

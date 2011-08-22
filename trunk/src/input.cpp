@@ -128,12 +128,20 @@ void TtyInput::setupSysKey(bool restore)
 		{T_CTRL_ALT, KEY_C,        CTRL_ALT_C},
 		{T_CTRL_ALT, KEY_D,        CTRL_ALT_D},
 		{T_CTRL_ALT, KEY_E,        CTRL_ALT_E},
+		/*
 		{T_CTRL_ALT, KEY_F1,       CTRL_ALT_F1},
 		{T_CTRL_ALT, KEY_F2,       CTRL_ALT_F2},
 		{T_CTRL_ALT, KEY_F3,       CTRL_ALT_F3},
 		{T_CTRL_ALT, KEY_F4,       CTRL_ALT_F4},
 		{T_CTRL_ALT, KEY_F5,       CTRL_ALT_F5},
 		{T_CTRL_ALT, KEY_F6,       CTRL_ALT_F6},
+		{T_CTRL_ALT, KEY_F7,       CTRL_ALT_F7},
+		{T_CTRL_ALT, KEY_F8,       CTRL_ALT_F8},
+		*/
+		{T_CTRL_ALT, KEY_F9,       CTRL_ALT_F9},
+		{T_CTRL_ALT, KEY_F10,       CTRL_ALT_F10},
+		{T_CTRL_ALT, KEY_F11,       CTRL_ALT_F11},
+		{T_CTRL_ALT, KEY_F12,       CTRL_ALT_F12},
 		{T_CTRL_ALT, KEY_K,       CTRL_ALT_K},
 	};
 
@@ -220,6 +228,7 @@ void TtyInput::setRawMode(bool raw, bool force)
 		if (!shell) return;
 
 		u32 num = down_num;
+		/*
 		for (u32 i = 0; i < NR_KEYS; i++) {
 			if (!key_down[i]) continue;
 
@@ -228,6 +237,7 @@ void TtyInput::setRawMode(bool raw, bool force)
 
 			if (!--num) break;
 		}
+		*/
 	}
 }
 

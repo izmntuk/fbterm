@@ -24,6 +24,8 @@
 #include "type.h"
 #include "instance.h"
 
+
+#define Font FbFont
 #define FW(cols) (Font::instance()->width() * (cols))
 #define FH(rows) (Font::instance()->height() * (rows))
 

@@ -8,4 +8,4 @@ fbterm_SOURCES = fbconfig.cpp fbconfig.h fbio.cpp fbio.h fbshell.cpp fbshell.h f
 EXTRA_fbterm_SOURCES = signalfd.h
 
 fbterm_CXXFLAGS = -fno-exceptions -fno-rtti -Ilib @FT2_CFLAGS@ @FC_CFLAGS@
-fbterm_LDADD = lib/libshell.a @FT2_LIBS@ @FC_LIBS@ @X86_LIBS@ -lutil
+fbterm_LDADD = lib/libshell.a @FT2_LIBS@ @FC_LIBS@ @X86_LIBS@ -lutil -lX11 -lXmu -lpthread

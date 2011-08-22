@@ -55,11 +55,12 @@ void waitChildProcessExit(s32 pid)
 	}
 }
 
-Shell::SelectedText Shell::mSelText;
+//Shell::SelectedText Shell::mSelText;
 
 Shell::Shell()
 {
 	mPid = -1;
+	mClip = new ClipBoard();
 }
 
 Shell::~Shell()
@@ -216,7 +217,7 @@ void Shell::textSelect(u16 x, u16 y, s32 type, s32 btn)
 		default:
 			break;
 		}
-	} else if (btn == RightButton) {
+	} else if (btn == MidButton) {
 		if (type == Press || type == DblClick) {
 			resetTextSelect();
 			putSelectedText();
@@ -236,6 +237,8 @@ void Shell::middleTextSelect(u16 x, u16 y)
 {
 	u32 start = mSelState.start, end = mSelState.end;
 	u32 new_end = y * w() + x;
+
+	if(end == new_end) return;
 
 	bool dir_sel = (end >= start);
 	bool dir_new_sel = (new_end >= start);
@@ -320,7 +323,9 @@ void Shell::endTextSelect()
 	}
 
 	utf16_to_utf8(buf, index, text);
-	mSelText.setText(text);
+	//mSelText.setText(text);
+	mClip->setText(text);
+	delete text;	
 }
 
 void Shell::resetTextSelect()
@@ -400,9 +405,10 @@ void Shell::autoTextSelect(u16 x, u16 y)
 
 void Shell::putSelectedText()
 {
-	if (mSelText.text) {
-		sendBack(mSelText.text);
-	}
+	//if (mSelText.text) {
+	//	sendBack(mSelText.text);
+	//}
+	sendBack(mClip->getText());
 }
 
 void Shell::inverseTextColor(u32 start, u32 end)

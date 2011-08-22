@@ -24,6 +24,7 @@
 #include "type.h"
 #include "instance.h"
 
+#define Screen FbScreen
 #define NR_COLORS 256
 
 struct Color {

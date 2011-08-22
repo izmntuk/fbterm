@@ -255,9 +255,9 @@ void FbTerm::processSysKey(u32 key)
 		manager->nextShell();
 		break;
 
-	case CTRL_ALT_F1 ... CTRL_ALT_F6:
+	case CTRL_ALT_F9 ... CTRL_ALT_F12:
 		if (manager->activeShell()) {
-			manager->activeShell()->switchCodec(key - CTRL_ALT_F1);
+			manager->activeShell()->switchCodec(key - CTRL_ALT_F9);
 		}
 		break;
 
