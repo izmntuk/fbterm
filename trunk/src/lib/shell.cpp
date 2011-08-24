@@ -313,11 +313,12 @@ void Shell::endTextSelect()
 	ex = end % w(), ey = end / w();
 
 	u32 index = 0;
+	s32 blank_index = -1;
 	for (u16 y = sy; y <= ey; y++) {
 		u16 x = (y == sy ? sx : 0);
 		u16 end = (y == ey ? ex : (w() -1));
-		u32 blank_index = -1;
 
+		blank_index = -1;
 		for (; x <= end; x++) {
 			u16 code = charCode(x, y);
 
@@ -337,6 +338,9 @@ void Shell::endTextSelect()
 			buf[blank_index] = '\n';
 			index = ++blank_index;
 		}
+	}
+	if(blank_index != -1){
+		index--;
 	}
 
 	utf16_to_utf8(buf, index, text);
