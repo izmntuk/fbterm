@@ -1,5 +1,11 @@
 
 trunk
+
+2011-08-24:
+	* lib/shell.cpp:
+	修正复制时空白字符的处理方法，实现自动插入回车符
+
+2011-08-22:
 	* lib/shell.cpp:
 	middleTextSelect():修复选择时候下标越界BUG
 	增加X系统剪切板支持

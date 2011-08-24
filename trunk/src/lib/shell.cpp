@@ -316,15 +316,33 @@ void Shell::endTextSelect()
 	for (u16 y = sy; y <= ey; y++) {
 		u16 x = (y == sy ? sx : 0);
 		u16 end = (y == ey ? ex : (w() -1));
+		u32 blank_index = -1;
+
 		for (; x <= end; x++) {
-			buf[index++] = charCode(x, y);
+			u16 code = charCode(x, y);
+
+			if(code == ' '){
+				if(blank_index == -1){
+					blank_index = index;
+				}
+			}else{
+				blank_index = -1;
+			}
+
+			buf[index++] = code;
 			if (charAttr(x, y).type == CharAttr::DoubleLeft) x++;
+		}
+
+		if(blank_index != -1){
+			buf[blank_index] = '\n';
+			index = ++blank_index;
 		}
 	}
 
 	utf16_to_utf8(buf, index, text);
 	//mSelText.setText(text);
 	mClip->setText(text);
+	printf("%s", text);
 	delete text;	
 }
 
