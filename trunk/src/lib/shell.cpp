@@ -346,7 +346,6 @@ void Shell::endTextSelect()
 	utf16_to_utf8(buf, index, text);
 	//mSelText.setText(text);
 	mClip->setText(text);
-	printf("%s", text);
 	delete text;	
 }
 
