@@ -97,8 +97,8 @@ keyboard:
   SHIFT_RIGHT:   switch to next window
   SHIFT_PAGEUP:    history scroll up
   SHIFT_PAGEDOWN:  history scroll down
-  CTRL_ALT_F1:                 switch to encoding of current locale
-  CTRL_ALT_F2 to CTRL_ALT_F6:  switch to additional encodings
+  CTRL_ALT_F7:                 switch to encoding of current locale
+  CTRL_ALT_F8 to CTRL_ALT_F12:  switch to additional encodings
   CTRL_SPACE:    toggle input method
   CTRL_ALT_K:    kill input method server
 
@@ -128,9 +128,9 @@ the value of option "\fIfont-names\fR". You may also modify the configure file o
 change the behavior of all programs based on fontconfig!
 .SH "TEXT ENCODING"
 By using iconv, FbTerm converts other encodings to internal encoding UTF-8. On startup, FbTerm checks variable
-\fILC_CTYPE\fR to determine the default text encoding, which is binded to shortcut CTRL_ALT_F1.
+\fILC_CTYPE\fR to determine the default text encoding, which is binded to shortcut CTRL_ALT_F7.
 User can specify up to 5 additional encodings with option "\fItext-encodings\fR", for example, as a Chinese user,
-you set "text-encodings=gbk,big5", shortcut CTRL_ALT_F2 will bind to gbk, and CTRL_ALT_F3 bind to big5.
+you set "text-encodings=gbk,big5", shortcut CTRL_ALT_F8 will bind to gbk, and CTRL_ALT_F4 bind to big5.
 
 In a number of CJK encodings there are ambiguous width characters which have a width of either narrow or wide
 depending on the context of their use. By default, FbTerm treats them as narrow width characters,
