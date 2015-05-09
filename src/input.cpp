@@ -220,14 +220,6 @@ void TtyInput::setRawMode(bool raw, bool force)
 		if (!shell) return;
 
 		u32 num = down_num;
-		for (u32 i = 0; i < NR_KEYS; i++) {
-			if (!key_down[i]) continue;
-
-			s8 code = i | 0x80;
-			shell->keyInput(&code, 1);
-
-			if (!--num) break;
-		}
 	}
 }
 
