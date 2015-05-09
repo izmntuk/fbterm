@@ -39,7 +39,7 @@
 #define screen (Screen::instance())
 #define manager (FbShellManager::instance())
 
-static const Color defaultPalette[NR_COLORS] = {
+static Color defaultPalette[NR_COLORS] = {
 	{0x00, 0x00, 0x00}, /* 0 */
 	{0xaa, 0x00, 0x00}, /* 1 */
 	{0x00, 0xaa, 0x00}, /* 2 */
@@ -552,6 +552,8 @@ static s32 tty0_fd = -1;
 
 void FbShell::switchVt(bool enter, FbShell *peer)
 {
+	configColors();
+
 	if (tty0_fd == -1) tty0_fd = open("/dev/tty0", O_RDWR);
 	if (tty0_fd != -1) {
 		seteuid(0);
@@ -770,4 +772,35 @@ bool FbShell::childProcessExited(s32 pid)
 	}
 
 	return false;
+}
+
+void FbShell::configColors(){
+	s8 varColor[32], color[7], rgb[3];
+	u32 i,j,k,x;
+	for(k=0;k<16;k++){
+		sprintf(varColor,"color-%d",k);
+		Config::instance()->getOption(varColor, color, sizeof(color));
+		for(i=0;i<3;i++){
+			rgb[i]=0;
+			for(j=0;j<2;j++){
+				x=i*2+j;
+				if(('0' <= color[x]) && (color[x] <= '9'))
+					rgb[i]|=(color[x]-48);
+				else if(('A' <= color[x]) && (color[x] <= 'F'))
+					rgb[i]|=(color[x]-55);
+				else if(('a' <= color[x]) && (color[x] <= 'f'))
+					rgb[i]|=(color[x]-87);
+				else
+					goto NoTouch;
+				if(!j)
+					rgb[i]<<=4;
+			}
+			if(i==2){
+				defaultPalette[k].red=rgb[0];
+				defaultPalette[k].green=rgb[1];
+				defaultPalette[k].blue=rgb[2];
+			}
+		}
+NoTouch:;
+	}
 }

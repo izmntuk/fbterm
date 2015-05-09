@@ -58,6 +58,7 @@ private:
 	void changeMode(ModeType type, u16 val);
 	void reportCursor();
 	void reportMode();
+	void configColors();
 
 	struct Cursor {
 		Cursor() {
